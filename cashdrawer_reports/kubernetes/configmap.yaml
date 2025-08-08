@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: cashdrawer-config
+  namespace: cashdrawer
+data:
+  DEBUG: "0"
+  ALLOWED_HOSTS: "*"
+  DATABASE_PATH: "/data/BullittDrawer.db"

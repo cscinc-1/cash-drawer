@@ -1,0 +1,27 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: cashdrawer-pv
+  namespace: cashdrawer
+spec:
+  capacity:
+    storage: 1Gi
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: manual
+  hostPath:
+    path: "/mnt/data/cashdrawer"
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: cashdrawer-pvc
+  namespace: cashdrawer
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: manual
+  resources:
+    requests:
+      storage: 1Gi
