@@ -3,8 +3,139 @@
 {% block title %}Daily Transactions - {{ date }}{% endblock %}
 
 {% block content %}
+<style>
+@media print {
+    .page-break {
+        page-break-before: always;
+    }
+    .no-print {
+        display: none !important;
+    }
+    body {
+        background: white !important;
+        font-size: 12px !important;
+    }
+    .container {
+        box-shadow: none !important;
+        max-width: none !important;
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+    .bg-gray-800 {
+        background-color: white !important;
+        color: black !important;
+        border-bottom: 2px solid black !important;
+    }
+    .text-white {
+        color: black !important;
+    }
+    .text-gray-300 {
+        color: #666 !important;
+    }
+    .text-right {
+        text-align: right !important;
+    }
+    .text-center {
+        text-align: center !important;
+    }
+    .overflow-x-auto {
+        overflow: visible !important;
+    }
+    .max-w-7xl {
+        max-width: none !important;
+    }
+    .mx-auto {
+        margin: 0 !important;
+    }
+    .p-6 {
+        padding: 10px !important;
+    }
+    .px-4 {
+        padding-left: 4px !important;
+        padding-right: 4px !important;
+    }
+    .py-2 {
+        padding-top: 2px !important;
+        padding-bottom: 2px !important;
+    }
+    /* Column width optimization for print */
+    th:nth-child(1), td:nth-child(1) { width: 8% !important; } /* ID */
+    th:nth-child(2), td:nth-child(2) { width: 12% !important; } /* User */
+    th:nth-child(3), td:nth-child(3) { width: 12% !important; } /* Cash */
+    th:nth-child(4), td:nth-child(4) { width: 12% !important; } /* Check */
+    th:nth-child(5), td:nth-child(5) { width: 12% !important; } /* Card */
+    th:nth-child(6), td:nth-child(6) { width: 12% !important; } /* Change */
+    th:nth-child(7), td:nth-child(7) { width: 15% !important; } /* Check# */
+    th:nth-child(8), td:nth-child(8) { width: 17% !important; } /* Paid By */
+    
+    /* Ensure table fits on page */
+    .min-w-full {
+        min-width: 0 !important;
+    }
+    
+    /* Modern print styling - clean and professional */
+    table {
+        border-collapse: collapse !important;
+        margin-bottom: 20px !important;
+        width: 100% !important;
+    }
+    th, td {
+        padding: 8px 12px !important;
+        font-size: 11px !important;
+        line-height: 1.4 !important;
+        border: none !important;
+    }
+    th {
+        background-color: transparent !important;
+        font-weight: bold !important;
+        color: black !important;
+        border-bottom: 2px solid #000 !important;
+        text-transform: uppercase !important;
+        letter-spacing: 0.5px !important;
+        padding-bottom: 6px !important;
+        margin-bottom: 4px !important;
+    }
+    tbody tr {
+        border-bottom: 1px solid #ddd !important;
+    }
+    tbody tr:nth-child(even) {
+        background-color: #f9f9f9 !important;
+    }
+    /* Drawer total rows */
+    tr.bg-gray-200 {
+        background-color: transparent !important;
+        border-top: 2px solid #000 !important;
+        border-bottom: 2px solid #000 !important;
+    }
+    tr.bg-gray-200 td {
+        font-weight: bold !important;
+        padding-top: 10px !important;
+        padding-bottom: 10px !important;
+    }
+    /* Day total styling */
+    .bg-blue-100 {
+        background-color: transparent !important;
+    }
+    .bg-blue-100 td {
+        border-top: 3px solid #000 !important;
+        border-bottom: 1px solid #000 !important;
+        font-weight: bold !important;
+        padding: 12px !important;
+    }
+    /* Report total */
+    .bg-green-50 {
+        background-color: transparent !important;
+        border: 3px solid #000 !important;
+        border-radius: 0 !important;
+    }
+    .text-green-700 {
+        color: #000 !important;
+    }
+}
+</style>
+
 <div class="max-w-7xl mx-auto p-6">
-    <div class="bg-white shadow-lg rounded-lg overflow-hidden">
+    <div class="bg-white shadow-lg rounded-lg overflow-hidden print:shadow-none print:rounded-none">
         <!-- Header -->
         <div class="bg-gray-800 text-white p-6">
             <h1 class="text-2xl font-bold">Bullitt County Sheriff - Cash Drawer Transactions, {{ date }}</h1>
@@ -12,7 +143,7 @@
         </div>
 
         <!-- Date selector -->
-        <div class="p-4 bg-gray-100 border-b flex justify-between items-center">
+        <div class="p-4 bg-gray-100 border-b flex justify-between items-center no-print">
             <form method="get" class="flex items-center space-x-4">
                 <label for="date" class="font-medium text-gray-700">Select Date:</label>
                 <input type="date" name="date" value="{{ date }}" 
@@ -24,6 +155,10 @@
             </form>
             
             <div class="flex space-x-2">
+                <a href="{% url 'reports:home' %}" 
+                   class="px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors">
+                    Home
+                </a>
                 <a href="{% url 'reports:accounts_report' %}?date={{ date }}" 
                    class="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors">
                     Accounts Report
@@ -36,7 +171,7 @@
             <h2 class="text-xl font-bold mb-6">{{ date }}</h2>
 
             {% for drawer_name, drawer_data in drawers.items %}
-            <div class="mb-8">
+            <div class="mb-8 {% if not forloop.first %}page-break{% endif %}">
                 <h3 class="text-lg font-bold mb-3 text-gray-800 underline">{{ drawer_name }}</h3>
                 
                 <div class="overflow-x-auto">
