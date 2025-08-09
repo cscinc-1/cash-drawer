@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "cashdrawer-reports.fullname" . }}-config
+  labels:
+    {{- include "cashdrawer-reports.labels" . | nindent 4 }}
+data:
+  DEBUG: {{ .Values.django.debug | quote }}
+  ALLOWED_HOSTS: {{ .Values.django.allowedHosts | quote }}
+  DATABASE_PATH: {{ .Values.django.databasePath | quote }}
+  {{- if .Values.env }}
+  {{- range $key, $value := .Values.env }}
+  {{ $key }}: {{ $value | quote }}
+  {{- end }}
+  {{- end }}
