@@ -29,7 +29,7 @@ This guide explains how to use Tilt for local development of the Cash Drawer Rep
 
 Just run:
 ```bash
-cd cashdrawer_reports
+cd CashDrawer  # or wherever you cloned this repo
 tilt up
 ```
 

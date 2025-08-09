@@ -9,7 +9,7 @@ A Django web application for viewing and reporting on cash drawer transactions f
 ### 1. Start the Development Environment
 
 ```bash
-cd cashdrawer_reports
+cd CashDrawer  # or wherever you cloned this repo
 tilt up
 ```
 
@@ -72,15 +72,20 @@ tilt down
 ## Project Structure
 
 ```
-cashdrawer_reports/
+CashDrawer/
 ├── reports/                    # Django app
 │   ├── templates/             # HTML templates
 │   ├── views.py              # View logic
 │   ├── models.py             # Database models
 │   └── urls.py               # URL routing
+├── cashdrawer_reports/        # Django project settings
+│   ├── settings.py           # Django configuration
+│   ├── urls.py              # Root URL routing
+│   └── wsgi.py              # WSGI configuration
 ├── helm/                      # Kubernetes deployment
 │   ├── cashdrawer-reports/   # Helm chart
 │   └── values.dev.yaml       # Development values
+├── manage.py                  # Django management script
 ├── Tiltfile                   # Development orchestration
 ├── Dockerfile                 # Container definition
 └── README.md                  # This file
