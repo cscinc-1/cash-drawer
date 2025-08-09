@@ -13,7 +13,9 @@ cd CashDrawer  # or wherever you cloned this repo
 tilt up
 ```
 
-Press **SPACE** to open the Tilt UI in your browser.
+Press **SPACE** to open the Tilt UI in your browser, then:
+- **Switch to List View** - Click the list icon in the top right of the Tilt UI for better navigation
+- **Wait for services to start** - All resources should show green status
 
 ### 2. Initialize the Database (First Time Only)
 
@@ -21,6 +23,10 @@ In the Tilt UI, click the **"copy-db"** button to copy the SQLite database into 
 
 ### 3. Access the Application
 
+**Option A: Via Tilt UI (Recommended)**
+- Click the link in the `cashdrawer-reports-dev` resource to open the app
+
+**Option B: Direct URLs**
 - **Main Application**: http://localhost:8000
 - **Alternative Access**: http://localhost:30081 (NodePort)
 
