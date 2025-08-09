@@ -1,0 +1,79 @@
+# Development values for cashdrawer-reports
+# This file overrides default values for local development with Tilt
+
+replicaCount: 1
+
+image:
+  repository: cashdrawer-reports
+  pullPolicy: Always
+  tag: "latest"
+
+# Development settings
+django:
+  debug: true
+  secretKey: "django-insecure-development-key-for-tilt"
+  allowedHosts: "*"
+  databasePath: "/data/BullittDrawer.db"
+
+# Service configuration for local development
+service:
+  type: NodePort
+  port: 80
+  targetPort: 8000
+
+nodePort:
+  enabled: true
+  port: 30081
+
+# Enable ingress for local development (optional)
+ingress:
+  enabled: false
+  className: "nginx"
+  hosts:
+    - host: cashdrawer.local
+      paths:
+        - path: /
+          pathType: Prefix
+
+# Resource limits for local development
+resources:
+  limits:
+    cpu: 1000m
+    memory: 1Gi
+  requests:
+    cpu: 100m
+    memory: 128Mi
+
+# Disable autoscaling for local development
+autoscaling:
+  enabled: false
+
+# Persistence for local development
+persistence:
+  enabled: true
+  storageClass: ""
+  accessMode: ReadWriteOnce
+  size: 500Mi
+  hostPath: "/tmp/cashdrawer-data"
+
+# Faster health checks for development
+livenessProbe:
+  httpGet:
+    path: /
+    port: http
+  initialDelaySeconds: 10
+  periodSeconds: 5
+  failureThreshold: 3
+
+readinessProbe:
+  httpGet:
+    path: /
+    port: http
+  initialDelaySeconds: 5
+  periodSeconds: 3
+  failureThreshold: 3
+
+# Development-specific annotations
+podAnnotations:
+  environment: "development"
+  managed-by: "tilt"

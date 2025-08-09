@@ -1,0 +1,17 @@
+apiVersion: v2
+name: cashdrawer-reports
+description: A Helm chart for Cash Drawer Reports Django application
+type: application
+version: 0.1.0
+appVersion: "1.0.0"
+keywords:
+  - django
+  - reports
+  - cash-drawer
+  - bullitt-county
+home: https://github.com/your-org/cashdrawer-reports
+sources:
+  - https://github.com/your-org/cashdrawer-reports
+maintainers:
+  - name: Cash Drawer Team
+    email: admin@bullittcounty.gov
