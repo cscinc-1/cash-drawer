@@ -155,6 +155,10 @@
             </form>
             
             <div class="flex space-x-2">
+                <button onclick="window.print()" 
+                        class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors">
+                    🖨️ Print Report
+                </button>
                 <a href="{% url 'reports:home' %}" 
                    class="px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors">
                     Home

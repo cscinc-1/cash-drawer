@@ -16,14 +16,44 @@ def home(request):
         cursor.execute("SELECT COUNT(*) FROM t_transact WHERE act='pay'")
         total_transactions = cursor.fetchone()[0]
         
-        # Get date range
-        cursor.execute("SELECT MIN(date), MAX(date) FROM t_transact WHERE act='pay'")
-        date_range = cursor.fetchone()
-        min_date = date_range[0] if date_range[0] else today
-        max_date = date_range[1] if date_range[1] else today
+        # Get date range - first check if table has any data
+        cursor.execute("SELECT COUNT(*) FROM t_transact")
+        total_records = cursor.fetchone()[0]
         
-        # Count unique drawers
-        cursor.execute("SELECT COUNT(DISTINCT machine) FROM t_transact")
+        if total_records > 0:
+            # Get date range - first try with act='pay', then without filter if no results
+            cursor.execute("SELECT MIN(date), MAX(date) FROM t_transact WHERE act='pay'")
+            date_range = cursor.fetchone()
+            
+            # If no results with act='pay', try without the filter
+            if not date_range[0] or not date_range[1]:
+                cursor.execute("SELECT MIN(date), MAX(date) FROM t_transact")
+                date_range = cursor.fetchone()
+            
+            # Convert text dates to proper date objects for template formatting
+            if date_range[0]:
+                try:
+                    min_date = datetime.strptime(date_range[0], '%Y-%m-%d').date()
+                except ValueError:
+                    min_date = date.today()
+            else:
+                min_date = date.today()
+                
+            if date_range[1]:
+                try:
+                    max_date = datetime.strptime(date_range[1], '%Y-%m-%d').date()
+                except ValueError:
+                    max_date = date.today()
+            else:
+                max_date = date.today()
+        else:
+            # No data in table at all
+            min_date = date.today()
+            max_date = date.today()
+        
+        # Count active drawers (drawers with transactions on the latest date)
+        max_date_str = max_date.strftime('%Y-%m-%d') if isinstance(max_date, date) else max_date
+        cursor.execute("SELECT COUNT(DISTINCT machine) FROM t_transact WHERE date = %s AND act = 'pay'", [max_date_str])
         total_drawers = cursor.fetchone()[0]
         
         # Count unique accounts
