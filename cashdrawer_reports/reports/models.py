@@ -2,6 +2,7 @@ from django.db import models
 
 
 class TTransact(models.Model):
+    id = models.AutoField(primary_key=True)
     date = models.TextField()
     time = models.TextField()
     user = models.TextField()
@@ -22,6 +23,7 @@ class TTransact(models.Model):
 
 
 class TAccounts(models.Model):
+    id = models.AutoField(primary_key=True)
     l_agency = models.TextField(blank=True, null=True)
     s_agency = models.TextField(blank=True, null=True)
 
@@ -31,6 +33,7 @@ class TAccounts(models.Model):
 
 
 class TTransactDetail(models.Model):
+    id = models.AutoField(primary_key=True)
     t_transact_id = models.IntegerField()
     t_accounts_id = models.IntegerField()
     t_items_id = models.IntegerField()

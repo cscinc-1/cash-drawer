@@ -3,7 +3,43 @@ from django.db.models import Sum, Count
 from django.db import connection
 from decimal import Decimal
 from .models import TTransact, TAccounts, TTransactDetail
-from datetime import datetime
+from datetime import datetime, date
+
+
+def home(request):
+    # Get today's date for default
+    today = date.today().strftime('%Y-%m-%d')
+    
+    # Get some basic statistics
+    with connection.cursor() as cursor:
+        # Count total transactions
+        cursor.execute("SELECT COUNT(*) FROM t_transact WHERE act='pay'")
+        total_transactions = cursor.fetchone()[0]
+        
+        # Get date range
+        cursor.execute("SELECT MIN(date), MAX(date) FROM t_transact WHERE act='pay'")
+        date_range = cursor.fetchone()
+        min_date = date_range[0] if date_range[0] else today
+        max_date = date_range[1] if date_range[1] else today
+        
+        # Count unique drawers
+        cursor.execute("SELECT COUNT(DISTINCT machine) FROM t_transact")
+        total_drawers = cursor.fetchone()[0]
+        
+        # Count unique accounts
+        cursor.execute("SELECT COUNT(*) FROM t_accounts")
+        total_accounts = cursor.fetchone()[0]
+    
+    context = {
+        'today': today,
+        'total_transactions': total_transactions,
+        'min_date': min_date,
+        'max_date': max_date,
+        'total_drawers': total_drawers,
+        'total_accounts': total_accounts,
+    }
+    
+    return render(request, 'reports/home.html', context)
 
 
 def daily_transactions(request):

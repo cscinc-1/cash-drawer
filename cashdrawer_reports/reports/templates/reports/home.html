@@ -1,0 +1,164 @@
+{% extends 'base.html' %}
+
+{% block title %}Cash Drawer Reports - Home{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
+    <div class="max-w-7xl mx-auto p-6">
+        <!-- Header -->
+        <div class="text-center mb-10 pt-8">
+            <h1 class="text-4xl font-bold text-gray-800 mb-2">Bullitt County Sheriff</h1>
+            <p class="text-xl text-gray-600">Cash Drawer Reporting System</p>
+        </div>
+
+        <!-- Statistics Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-10">
+            <div class="bg-white rounded-lg shadow-md p-6 border-l-4 border-blue-500">
+                <div class="flex items-center">
+                    <div class="flex-1">
+                        <p class="text-gray-500 text-sm">Total Transactions</p>
+                        <p class="text-2xl font-bold text-gray-800">{{ total_transactions|default:"0" }}</p>
+                    </div>
+                    <svg class="w-12 h-12 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
+                    </svg>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-md p-6 border-l-4 border-green-500">
+                <div class="flex items-center">
+                    <div class="flex-1">
+                        <p class="text-gray-500 text-sm">Active Drawers</p>
+                        <p class="text-2xl font-bold text-gray-800">{{ total_drawers|default:"0" }}</p>
+                    </div>
+                    <svg class="w-12 h-12 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path>
+                    </svg>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-md p-6 border-l-4 border-purple-500">
+                <div class="flex items-center">
+                    <div class="flex-1">
+                        <p class="text-gray-500 text-sm">Total Accounts</p>
+                        <p class="text-2xl font-bold text-gray-800">{{ total_accounts|default:"0" }}</p>
+                    </div>
+                    <svg class="w-12 h-12 text-purple-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
+                    </svg>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-md p-6 border-l-4 border-orange-500">
+                <div class="flex items-center">
+                    <div class="flex-1">
+                        <p class="text-gray-500 text-sm">Date Range</p>
+                        <p class="text-sm font-bold text-gray-800">{{ min_date|date:"m/d/y" }} - {{ max_date|date:"m/d/y" }}</p>
+                    </div>
+                    <svg class="w-12 h-12 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- Report Selection -->
+        <div class="bg-white rounded-lg shadow-lg p-8">
+            <h2 class="text-2xl font-bold text-gray-800 mb-6 text-center">Select a Report</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Daily Transactions Report -->
+                <div class="bg-gradient-to-r from-blue-50 to-blue-100 rounded-lg p-6 border border-blue-200 hover:shadow-lg transition-shadow cursor-pointer"
+                     onclick="window.location.href='{% url 'reports:daily_transactions' %}?date={{ today }}'">
+                    <div class="flex items-start">
+                        <div class="flex-shrink-0">
+                            <div class="flex items-center justify-center h-12 w-12 rounded-md bg-blue-500 text-white">
+                                <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="ml-4">
+                            <h3 class="text-lg font-semibold text-gray-800">Daily Transactions Report</h3>
+                            <p class="mt-2 text-gray-600">View all cash drawer transactions for a specific date, grouped by drawer with detailed payment breakdowns.</p>
+                            <div class="mt-4">
+                                <form method="get" action="{% url 'reports:daily_transactions' %}" onclick="event.stopPropagation();">
+                                    <div class="flex items-center space-x-2">
+                                        <input type="date" name="date" value="{{ today }}" 
+                                               class="px-3 py-1 border rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                               onclick="event.stopPropagation();">
+                                        <button type="submit" 
+                                                class="px-4 py-1 bg-blue-600 text-white text-sm rounded-md hover:bg-blue-700 transition-colors">
+                                            Generate
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Accounts Report -->
+                <div class="bg-gradient-to-r from-indigo-50 to-indigo-100 rounded-lg p-6 border border-indigo-200 hover:shadow-lg transition-shadow cursor-pointer"
+                     onclick="window.location.href='{% url 'reports:accounts_report' %}?date={{ today }}'">
+                    <div class="flex items-start">
+                        <div class="flex-shrink-0">
+                            <div class="flex items-center justify-center h-12 w-12 rounded-md bg-indigo-500 text-white">
+                                <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="ml-4">
+                            <h3 class="text-lg font-semibold text-gray-800">Accounts Report</h3>
+                            <p class="mt-2 text-gray-600">View transactions grouped by agency accounts with detailed breakdowns and summaries for each account.</p>
+                            <div class="mt-4">
+                                <form method="get" action="{% url 'reports:accounts_report' %}" onclick="event.stopPropagation();">
+                                    <div class="flex items-center space-x-2">
+                                        <input type="date" name="date" value="{{ today }}" 
+                                               class="px-3 py-1 border rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                                               onclick="event.stopPropagation();">
+                                        <button type="submit" 
+                                                class="px-4 py-1 bg-indigo-600 text-white text-sm rounded-md hover:bg-indigo-700 transition-colors">
+                                            Generate
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="mt-8 pt-6 border-t border-gray-200">
+                <h3 class="text-lg font-semibold text-gray-700 mb-4">Quick Actions</h3>
+                <div class="flex flex-wrap gap-2">
+                    <a href="{% url 'reports:daily_transactions' %}?date={{ today }}" 
+                       class="px-4 py-2 bg-gray-100 text-gray-700 rounded-md hover:bg-gray-200 transition-colors text-sm">
+                        Today's Transactions
+                    </a>
+                    <a href="{% url 'reports:daily_transactions' %}?date={{ max_date }}" 
+                       class="px-4 py-2 bg-gray-100 text-gray-700 rounded-md hover:bg-gray-200 transition-colors text-sm">
+                        Latest Transactions
+                    </a>
+                    <a href="{% url 'reports:accounts_report' %}?date={{ today }}" 
+                       class="px-4 py-2 bg-gray-100 text-gray-700 rounded-md hover:bg-gray-200 transition-colors text-sm">
+                        Today's Accounts
+                    </a>
+                    <a href="{% url 'reports:accounts_report' %}?date={{ max_date }}" 
+                       class="px-4 py-2 bg-gray-100 text-gray-700 rounded-md hover:bg-gray-200 transition-colors text-sm">
+                        Latest Accounts
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="text-center mt-10 text-gray-600 text-sm">
+            <p>Cash Drawer Reporting System v1.0</p>
+            <p class="mt-1">© {% now "Y" %} Bullitt County Sheriff's Office</p>
+        </div>
+    </div>
+</div>
+{% endblock %}
